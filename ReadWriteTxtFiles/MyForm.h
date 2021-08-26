@@ -33,6 +33,8 @@ namespace ReadWriteTxtFiles {
 	private: System::Windows::Forms::Button^ createTxtFileBtn;
 	private: System::Windows::Forms::TextBox^ inputTextBox;
 	private: System::Windows::Forms::TextBox^ namingTextBox;
+	private: System::Windows::Forms::Label^ label1;
+	private: System::Windows::Forms::Label^ label2;
 	protected:
 
 
@@ -54,6 +56,8 @@ namespace ReadWriteTxtFiles {
 			this->createTxtFileBtn = (gcnew System::Windows::Forms::Button());
 			this->inputTextBox = (gcnew System::Windows::Forms::TextBox());
 			this->namingTextBox = (gcnew System::Windows::Forms::TextBox());
+			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
 			// 
 			// exitBtn
@@ -63,7 +67,7 @@ namespace ReadWriteTxtFiles {
 			this->exitBtn->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->exitBtn->ForeColor = System::Drawing::Color::Snow;
-			this->exitBtn->Location = System::Drawing::Point(548, 12);
+			this->exitBtn->Location = System::Drawing::Point(274, 12);
 			this->exitBtn->Name = L"exitBtn";
 			this->exitBtn->Size = System::Drawing::Size(67, 29);
 			this->exitBtn->TabIndex = 11;
@@ -80,33 +84,59 @@ namespace ReadWriteTxtFiles {
 			this->createTxtFileBtn->ForeColor = System::Drawing::Color::Snow;
 			this->createTxtFileBtn->Location = System::Drawing::Point(12, 12);
 			this->createTxtFileBtn->Name = L"createTxtFileBtn";
-			this->createTxtFileBtn->Size = System::Drawing::Size(112, 29);
+			this->createTxtFileBtn->Size = System::Drawing::Size(176, 29);
 			this->createTxtFileBtn->TabIndex = 12;
-			this->createTxtFileBtn->Text = L"Create Text File";
+			this->createTxtFileBtn->Text = L"Create/Choose Text File";
 			this->createTxtFileBtn->UseVisualStyleBackColor = false;
 			this->createTxtFileBtn->Click += gcnew System::EventHandler(this, &MyForm::createTxtFileBtn_Click_1);
 			// 
 			// inputTextBox
 			// 
-			this->inputTextBox->Location = System::Drawing::Point(12, 47);
+			this->inputTextBox->Location = System::Drawing::Point(12, 140);
+			this->inputTextBox->Multiline = true;
 			this->inputTextBox->Name = L"inputTextBox";
-			this->inputTextBox->Size = System::Drawing::Size(218, 22);
+			this->inputTextBox->Size = System::Drawing::Size(577, 133);
 			this->inputTextBox->TabIndex = 13;
-			this->inputTextBox->Text = L"Input";
+			this->inputTextBox->TextChanged += gcnew System::EventHandler(this, &MyForm::inputTextBox_TextChanged);
 			// 
 			// namingTextBox
 			// 
-			this->namingTextBox->Location = System::Drawing::Point(130, 17);
+			this->namingTextBox->Location = System::Drawing::Point(12, 93);
 			this->namingTextBox->Name = L"namingTextBox";
-			this->namingTextBox->Size = System::Drawing::Size(100, 22);
+			this->namingTextBox->Size = System::Drawing::Size(172, 22);
 			this->namingTextBox->TabIndex = 14;
-			this->namingTextBox->Text = L"Name ";
+			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->BackColor = System::Drawing::Color::Transparent;
+			this->label1->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.25F));
+			this->label1->ForeColor = System::Drawing::SystemColors::Control;
+			this->label1->Location = System::Drawing::Point(12, 118);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(42, 19);
+			this->label1->TabIndex = 15;
+			this->label1->Text = L"Input";
+			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->BackColor = System::Drawing::Color::Transparent;
+			this->label2->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.25F));
+			this->label2->ForeColor = System::Drawing::SystemColors::Control;
+			this->label2->Location = System::Drawing::Point(12, 71);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(45, 19);
+			this->label2->TabIndex = 16;
+			this->label2->Text = L"Name";
 			// 
 			// MyForm
 			// 
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::None;
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
-			this->ClientSize = System::Drawing::Size(627, 526);
+			this->ClientSize = System::Drawing::Size(605, 285);
+			this->Controls->Add(this->label2);
+			this->Controls->Add(this->label1);
 			this->Controls->Add(this->namingTextBox);
 			this->Controls->Add(this->inputTextBox);
 			this->Controls->Add(this->createTxtFileBtn);
@@ -135,11 +165,12 @@ namespace ReadWriteTxtFiles {
 	}
 	private: System::Void createTxtFileBtn_Click_1(System::Object^ sender, System::EventArgs^ e)
 	{
-		String^ fileTitle = namingTextBox->Text;
-		StreamWriter^ outFile = gcnew StreamWriter(fileTitle); // Designate the name of the file here, you can also 
-		  													   // give a specific path rather than a name for foreign files. 
-		String^ inputTxt = inputTextBox->Text;
-		outFile->Write(inputTxt);
+		String^ fileTitle = namingTextBox->Text; // Assign a variable to carry the title of a file, to access files
+		StreamWriter^ outFile = gcnew StreamWriter(fileTitle, true);	// Designate the name of the file here, you can also 
+		  																// give a specific path rather than a name for foreign files. 
+
+		String^ inputTxt = inputTextBox->Text; // Assign a variable with the value of the input box, to write to file chosen.  
+		outFile->Write(inputTxt + "\n");
 
 		outFile->Close(); 
 	}
